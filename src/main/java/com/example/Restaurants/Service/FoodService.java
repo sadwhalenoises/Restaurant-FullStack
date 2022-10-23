@@ -14,7 +14,7 @@ public class FoodService {
     @Autowired
     FoodDao dao;
 
-    public List<Food> getFood(String type) { return dao.findAll();}
+    public List<Food> getFood() { return dao.findAll();}
 
     public Food addFood(Food food) { return this.dao.save(food);}
 

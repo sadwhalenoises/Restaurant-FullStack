@@ -1,6 +1,7 @@
 package com.example.Restaurants.Entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "Resturants")
@@ -8,7 +9,7 @@ public class Restaurant {
     @Id
     @Column(name="Id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String resturantId;
+    private int restaurantId;
 
     @Column(name="name")
     private String restaurantName;
@@ -20,18 +21,15 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String restaurantName, byte[] pdf) {
+    public Restaurant(String restaurantName) {
         this.restaurantName = restaurantName;
-        this.pdf = pdf;
     }
 
-    public String getResturantId() {
-        return resturantId;
+    public int getResturantId() {
+        return restaurantId;
     }
 
-    public void setResturantId(String resturantId) {
-        this.resturantId = resturantId;
-    }
+
 
     public String getResturantName() {
         return restaurantName;
@@ -47,5 +45,14 @@ public class Restaurant {
 
     public void setPdf(byte[] pdf) {
         this.pdf = pdf;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "restaurantId=" + restaurantId +
+                ", restaurantName='" + restaurantName + '\'' +
+                ", pdf=" + Arrays.toString(pdf) +
+                '}';
     }
 }

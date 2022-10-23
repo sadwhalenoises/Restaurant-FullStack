@@ -54,4 +54,14 @@ public class Food {
     public void setFoodPrice(double foodPrice) {
         this.foodPrice = foodPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "id=" + id +
+                ", foodType='" + foodType + '\'' +
+                ", foodName=" + foodName +
+                ", foodPrice=" + foodPrice +
+                '}';
+    }
 }
