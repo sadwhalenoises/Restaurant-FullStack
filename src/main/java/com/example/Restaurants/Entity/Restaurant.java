@@ -11,7 +11,7 @@ public class Restaurant {
     private String resturantId;
 
     @Column(name="name")
-    private String resturantName;
+    private String restaurantName;
 
     @Lob
     private byte[] pdf;
@@ -20,9 +20,8 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String resturantId, String resturantName, byte[] pdf) {
-        this.resturantId = resturantId;
-        this.resturantName = resturantName;
+    public Restaurant(String restaurantName, byte[] pdf) {
+        this.restaurantName = restaurantName;
         this.pdf = pdf;
     }
 
@@ -35,11 +34,11 @@ public class Restaurant {
     }
 
     public String getResturantName() {
-        return resturantName;
+        return restaurantName;
     }
 
     public void setResturantName(String resturantName) {
-        this.resturantName = resturantName;
+        this.restaurantName = resturantName;
     }
 
     public byte[] getPdf() {
