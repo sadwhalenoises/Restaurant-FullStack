@@ -1,7 +1,19 @@
 package com.example.Restaurants.Entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Food")
 public class Food {
@@ -13,55 +25,13 @@ public class Food {
     @Id
     private String foodType;
 
-    private int foodName;
+    private String foodName;
 
     private double foodPrice;
 
-    public Food(String foodType, int foodName, double foodPrice) {
-        this.foodType = foodType;
-        this.foodName = foodName;
-        this.foodPrice = foodPrice;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "Restaurant_id", insertable = false, updatable = false, referencedColumnName = "id")
+//    @Fetch(FetchMode.JOIN)
+//    private List<Restaurant> restaurant;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFoodType() {
-        return foodType;
-    }
-
-    public void setFoodType(String foodType) {
-        this.foodType = foodType;
-    }
-
-    public int getFoodName() {
-        return foodName;
-    }
-
-    public void setFoodName(int foodName) {
-        this.foodName = foodName;
-    }
-
-    public double getFoodPrice() {
-        return foodPrice;
-    }
-
-    public void setFoodPrice(double foodPrice) {
-        this.foodPrice = foodPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "Food{" +
-                "id=" + id +
-                ", foodType='" + foodType + '\'' +
-                ", foodName=" + foodName +
-                ", foodPrice=" + foodPrice +
-                '}';
-    }
 }

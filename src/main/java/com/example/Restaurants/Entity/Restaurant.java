@@ -1,8 +1,18 @@
 package com.example.Restaurants.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "Resturants")
 public class Restaurant {
@@ -17,42 +27,7 @@ public class Restaurant {
     @Lob
     private byte[] pdf;
 
-    public Restaurant(){
-
-    }
-
-    public Restaurant(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public int getResturantId() {
-        return restaurantId;
-    }
-
-
-
-    public String getResturantName() {
-        return restaurantName;
-    }
-
-    public void setResturantName(String resturantName) {
-        this.restaurantName = resturantName;
-    }
-
-    public byte[] getPdf() {
-        return pdf;
-    }
-
-    public void setPdf(byte[] pdf) {
-        this.pdf = pdf;
-    }
-
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "restaurantId=" + restaurantId +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", pdf=" + Arrays.toString(pdf) +
-                '}';
-    }
+    @OneToMany(targetEntity = Food.class, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "r_id", referencedColumnName = "Id")
+    private List<Food> restFood;
 }
