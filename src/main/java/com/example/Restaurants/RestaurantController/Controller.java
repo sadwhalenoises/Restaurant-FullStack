@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class Controller {
 
     @Autowired
@@ -38,14 +39,6 @@ public class Controller {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/Restaurant")
-    public List<Restaurant> getRestaurants(){return this.restaurantService.getRestaurants();}
-
-    @GetMapping("/Restaurant/{id}")
-    public Restaurant getId(@PathVariable String id) {return this.restaurantService.getRestaurantId(Integer.parseInt(id));}
-
-    @PostMapping("/Restaurant")
-    public Restaurant addRestaurant(@RequestBody Restaurant restaurant){return this.restaurantService.addRestaurant(restaurant);}
 
     @PostMapping("/RestaurantTest") //food
     public Restaurant addFood(@RequestBody RestaurantFood restaurantFood){
@@ -67,6 +60,15 @@ public class Controller {
         return this.userService.updateRestaurant(id, restaurant);
     }
 
+    @GetMapping("/user/{name}")
+    public List<Users> findUser(@PathVariable String name){
+        return this.usersDao.findByName(name);
+    }
+
+    @GetMapping("/{email}")
+    public List<Users> findEmail(@PathVariable String email){
+        return this.usersDao.findByEmail(email);
+    }
     @GetMapping("/getTest")
     public List<Users> findAllUsers(){
         return usersDao.findAll();
@@ -79,6 +81,8 @@ public class Controller {
     public String removeRestaurant(@PathVariable String id){
         return this.restaurantService.removeRestaurant(Integer.parseInt(id));
     }
+
+
 
     @GetMapping("/Food")
     public List<Food> getFood(){return this.foodService.getFood();}
