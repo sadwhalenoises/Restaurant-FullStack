@@ -37,10 +37,9 @@ public class FoodService {
         } else {
             throw new RuntimeException("Restaurant not found!");
         }
-        this.dao.save(food);
+        dao.save(food);
         restaurant.getRestFood().add(food);
         return this.restDao.save(restaurant);
-
     }
 
 }

@@ -19,10 +19,10 @@ import java.util.List;
 public class Food {
 
 
-
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Id
+
     private String foodType;
 
     private String foodName;

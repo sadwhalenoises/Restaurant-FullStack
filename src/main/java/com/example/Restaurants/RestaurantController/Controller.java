@@ -36,11 +36,11 @@ public class Controller {
     @Autowired
     private RestaurantService restaurantService;
 
-    @Autowired
-    private UserService userService;
+   @Autowired
+   private UserService userService;
 
 
-    @PostMapping("/RestaurantTest") //food
+    @PostMapping("/food/{id}/") //food
     public Restaurant addFood(@RequestBody RestaurantFood restaurantFood){
         return restDao.save(restaurantFood.getRestaurant());
     }
@@ -60,12 +60,17 @@ public class Controller {
         return this.userService.updateRestaurant(id, restaurant);
     }
 
-    @GetMapping("/user/{name}")
+    @GetMapping("/user/name/{name}")
     public List<Users> findUser(@PathVariable String name){
         return this.usersDao.findByName(name);
     }
 
-    @GetMapping("/{email}")
+    @PostMapping("/user")
+    public Users addUser(@RequestBody Users user){
+        return this.userService.addUser(user);
+    }
+
+    @GetMapping("/user/email/{email}")
     public List<Users> findEmail(@PathVariable String email){
         return this.usersDao.findByEmail(email);
     }
@@ -84,17 +89,17 @@ public class Controller {
 
 
 
-    @GetMapping("/Food")
+    @GetMapping("/food")
     public List<Food> getFood(){return this.foodService.getFood();}
 
 
-    @PostMapping("/Food/{id}")
+    @PostMapping("/addfood/{id}")
     public Restaurant addFood(@PathVariable int id, @RequestBody Food food){return this.foodService.addFood(id,food);}
 
-    @PutMapping("/Food")
+    @PutMapping("/food")
     public Food updateFood(@RequestBody Food food){return this.foodService.updateFood(food);}
 
-    @DeleteMapping("/Food/{id}")
+    @DeleteMapping("/food/{id}")
     public String removeFood(@PathVariable String id){
         return this.foodService.removeFood(Integer.parseInt(id));
     }

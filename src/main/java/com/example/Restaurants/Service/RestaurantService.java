@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,13 +50,30 @@ public class RestaurantService {
         return dao.save(restaurant);
     }
 
+    public OutputStream getPdf(int id) throws IOException {
+        Optional<Restaurant> r = this.dao.findById(id);
+        Restaurant restaurant = null;
+        if(r.isPresent()){
+            restaurant = r.get();
+        } else {
+            throw new RuntimeException("Restaurant not found!");
+        }
+        byte[] pdf = restaurant.getPdf();
+        OutputStream out = new FileOutputStream("restaurant.pdf");
+        out.write(pdf);
+        out.close();
+
+
+        return out;
+    }
+
     public Restaurant addRestaurant(Restaurant restaurant){ return this.dao.save(restaurant);}
 
     public Restaurant updateRestaurant(Restaurant restaurant) { return this.dao.save(restaurant); }
 
     public String removeRestaurant(int id){
         this.dao.deleteById(id);
-        return "Deleted!";
+        return " ";
     }
 
 }

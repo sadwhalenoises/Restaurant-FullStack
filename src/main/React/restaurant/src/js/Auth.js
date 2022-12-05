@@ -1,40 +1,70 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {useRef} from 'react';
+import { useNavigate } from "react-router-dom";
+import User from "./User";
 
 const Auth = (props) => {
     const[authMode, setAuthMode] = useState("signin")
     const[errorMessage, setErrorMessage] = useState('')
+    const[name, setName] = useState('')
+    const[email, setEmail] = useState('')
+    const[password, setPassword] = useState('')
+    const[singupData, setSingupData] = useState('')
+    const[signinData, setSigninData] = useState('')
+    const[showUser, setShowUser] = useState(false)
 
     const emailRef = useRef(null)
     const passRef = useRef(null)
+    const navigate = useNavigate()
     var data 
 
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
       }
-
-    const onSignupSubmit = async (event) =>{
-        event.preventDefault()
-        console.log(`http://localhost:9090/${emailRef.current.value}`)
-        await fetch(`http://localhost:9090/${emailRef.current.value}`)
-            .then((res) => res.json())
-            .then((resjson) => data = resjson)
-        //const data = await response.json();
-        //console.log(data)
-        //console.log(data[0].email)
-        if(data[0].email !== emailRef.current.value && data[0].password !== passRef.current.value){
-            setErrorMessage({name: "pass", message: "invalid"})
-        }else{
-            setErrorMessage({name: "pass", message: "success"})
-        }
-        }
     
 
-    const renderErrorMessage = (error) =>{
-        error === errorMessage.name && (
-            <div className="error">{errorMessage.message}</div>
-        )
+    
+
+    const onSigninSubmit = async (event) =>{
+      event.preventDefault()
+      await fetch(`http://localhost:9090/user/email/${emailRef.current.value}`)
+          .then((res) => res.json())
+          .then((resjson) => data = resjson)
+          console.log(data)
+      if(data[0].email !== emailRef.current.value || data[0].password !== passRef.current.value){
+          setErrorMessage({name: "pass", message: "email or password is incorrect!"})
+      }else{
+        localStorage.setItem("name", data[0].name)
+          navigate("/user")
+      }
+      }
+
+    
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+      })
     }
+    
+    const onSignupSubmit = async (event) =>{
+      event.preventDefault()
+
+      await fetch(`http://localhost:9090/user`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          localStorage.setItem("name", name)
+          navigate("/user");
+          
+        })
+
+    }
+    
+
+    
 
     if (authMode === "signin") {
         return (
@@ -52,6 +82,7 @@ const Auth = (props) => {
                   <label>Email address</label>
                   <input
                     ref={emailRef}
+                    onChange={e => setEmail(e.target.value)}
                     type="email"
                     name="email"
                     className="form-control mt-1"
@@ -68,16 +99,18 @@ const Auth = (props) => {
                     className="form-control mt-1"
                     placeholder="Enter password"
                   />
-                  {errorMessage.message} 
+                  <div className="error">{errorMessage.message}</div>
                 </div>
                 <div className="d-grid gap-2 mt-3">
-                  <button type="submit" className="btn btn-primary" onClick={onSignupSubmit}>
+                  <button type="submit" className="btn btn-primary" onClick={onSigninSubmit}>
                     Submit
                   </button>
+                  
                 </div>
               </div>
             </form>
           </div>
+          
         )
       }
     
@@ -95,9 +128,10 @@ const Auth = (props) => {
               <div className="form-group mt-3">
                 <label>Full Name</label>
                 <input
-                  type="email"
+                  type="name"
                   className="form-control mt-1"
                   placeholder="e.g Jane Doe"
+                  onChange={e => setName(e.target.value)}
                 />
               </div>
               <div className="form-group mt-3">
@@ -106,6 +140,7 @@ const Auth = (props) => {
                   type="email"
                   className="form-control mt-1"
                   placeholder="Email Address"
+                  onChange={e => setEmail(e.target.value)}
                 />
               </div>
               <div className="form-group mt-3">
@@ -114,10 +149,11 @@ const Auth = (props) => {
                   type="password"
                   className="form-control mt-1"
                   placeholder="Password"
+                  onChange={e => setPassword(e.target.value)}
                 />
               </div>
               <div className="d-grid gap-2 mt-3">
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" onClick={onSignupSubmit}>
                   Submit
                 </button>
               </div>

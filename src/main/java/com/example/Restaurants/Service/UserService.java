@@ -32,7 +32,6 @@ public class UserService {
     }
 
     public Users updateRestaurant(int id, Restaurant restaurant ){
-        Restaurant rest;
         Optional<Users> u = this.dao.findById(id);
         Users users = null;
         if(u.isPresent()){
@@ -45,6 +44,11 @@ public class UserService {
          restDao.save(restaurant);
          users.getRestaurants().add(restaurant);
          return this.dao.save(users);
+
+    }
+
+    public Users addUser(Users users){
+        return this.dao.save(users);
     }
 
 
