@@ -1,6 +1,7 @@
 package com.example.Restaurants.Service;
 
 import com.example.Restaurants.Dao.RestaurantDao;
+import com.example.Restaurants.Dao.pdfDao;
 import com.example.Restaurants.Entity.Restaurant;
 import com.example.Restaurants.Entity.pdf;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class RestaurantService {
     @Autowired
     private RestaurantDao dao;
 
+    @Autowired
+    private pdfDao pdfDao;
+
     public List<Restaurant> getRestaurants(){ return dao.findAll();}
 
     public Restaurant getRestaurantId(int id) {
@@ -35,44 +39,55 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public Restaurant store(MultipartFile file, int id) throws IOException {
-        Optional<Restaurant> r = this.dao.findById(id);
-        Restaurant restaurant = null;
-        if(r.isPresent()){
-            restaurant = r.get();
-        } else {
-            throw new RuntimeException("Restaurant not found!");
-        }
+//    public Restaurant store(MultipartFile file, int id) throws IOException {
+//        Optional<Restaurant> r = this.dao.findById(id);
+//        Restaurant restaurant = null;
+//        if(r.isPresent()){
+//            restaurant = r.get();
+//        } else {
+//            throw new RuntimeException("Restaurant not found!");
+//        }
+//
+//        restaurant.setPdf(file.getBytes());
+//
+//
+//        return dao.save(restaurant);
+//    }
 
-        restaurant.setPdf(file.getBytes());
-
-
-        return dao.save(restaurant);
-    }
-
-    public OutputStream getPdf(int id) throws IOException {
-        Optional<Restaurant> r = this.dao.findById(id);
-        Restaurant restaurant = null;
-        if(r.isPresent()){
-            restaurant = r.get();
-        } else {
-            throw new RuntimeException("Restaurant not found!");
-        }
-        byte[] pdf = restaurant.getPdf();
-        OutputStream out = new FileOutputStream("restaurant.pdf");
-        out.write(pdf);
-        out.close();
-
-
-        return out;
-    }
+//    public OutputStream getPdf(int id) throws IOException {
+//        Optional<Restaurant> r = this.dao.findById(id);
+//        Restaurant restaurant = null;
+//        if(r.isPresent()){
+//            restaurant = r.get();
+//        } else {
+//            throw new RuntimeException("Restaurant not found!");
+//        }
+//        byte[] pdf = restaurant.getPdf();
+//        OutputStream out = new FileOutputStream("restaurant.pdf");
+//        out.write(pdf);
+//        out.close();
+//
+//
+//        return out;
+//    }
 
     public Restaurant addRestaurant(Restaurant restaurant){ return this.dao.save(restaurant);}
 
     public Restaurant updateRestaurant(Restaurant restaurant) { return this.dao.save(restaurant); }
 
     public String removeRestaurant(int id){
-        this.dao.deleteById(id);
+
+        Optional<pdf> p = this.pdfDao.findByRestId(String.valueOf(id));
+        pdf pdf = null;
+        if(p.isPresent()){
+            pdf = p.get();
+        } else {
+            this.dao.deleteById(id);
+        }
+
+        this.pdfDao.deleteByRestId(id);
+
+
         return " ";
     }
 

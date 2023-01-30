@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pdfFiles")
+@Table(name = "files")
 public class pdf {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -27,6 +27,13 @@ public class pdf {
         this.name = name;
         this.type = type;
         this.data = data;
+    }
+
+    public pdf(String name, String type, byte[] data, Restaurant restaurant) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+        this.restaurant = restaurant;
     }
 
     public String getUuid() {
@@ -53,6 +60,14 @@ public class pdf {
         this.type = type;
     }
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
     public byte[] getData() {
         return data;
     }
@@ -60,4 +75,8 @@ public class pdf {
     public void setData(byte[] data) {
         this.data = data;
     }
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name= "restId", referencedColumnName = "Id")
+    private Restaurant restaurant;
 }

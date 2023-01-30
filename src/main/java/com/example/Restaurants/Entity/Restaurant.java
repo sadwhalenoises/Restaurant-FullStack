@@ -24,14 +24,8 @@ public class Restaurant {
     @Column(name="name")
     private String restaurantName;
 
-    @Lob
-    private byte[] pdf;
-
     @OneToMany(targetEntity = Food.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "r_id", referencedColumnName = "Id")
     private List<Food> restFood;
 
-//    @OneToMany(targetEntity =pdf.class, cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "restaurant_id", referencedColumnName = "Id")
-//    private List<pdf> pdfFiles;
 }

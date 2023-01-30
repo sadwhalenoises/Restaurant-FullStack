@@ -69,12 +69,11 @@ function User(props) {
 
     const deleteRest = (e) =>{
       setRestId(e.target.value)
-      console.log(restid)
       fetch(`http://localhost:9090/Restaurant/${restid}`, {method: 'DELETE'})
         .then(res => res.json())
         .then(response => {
-          console.log(response)
-          window.location.reload()
+
+      window.location.reload()
           console.log('hi')
           })
         

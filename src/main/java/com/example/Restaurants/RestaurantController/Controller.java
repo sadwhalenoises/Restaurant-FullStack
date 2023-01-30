@@ -6,15 +6,20 @@ import com.example.Restaurants.Dao.UsersDao;
 import com.example.Restaurants.Entity.Food;
 import com.example.Restaurants.Entity.Restaurant;
 import com.example.Restaurants.Entity.Users;
+import com.example.Restaurants.Entity.pdf;
 import com.example.Restaurants.Service.FoodService;
 import com.example.Restaurants.Service.RestaurantService;
-import com.example.Restaurants.Service.UserService;
+import com.example.Restaurants.Service.pdfStorage;
 import com.example.Restaurants.dto.RestaurantFood;
 import com.example.Restaurants.dto.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.example.Restaurants.Service.UserService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -39,6 +44,9 @@ public class Controller {
    @Autowired
    private UserService userService;
 
+   @Autowired
+   private pdfStorage pdfStorage;
+
 
     @PostMapping("/food/{id}/") //food
     public Restaurant addFood(@RequestBody RestaurantFood restaurantFood){
@@ -58,6 +66,11 @@ public class Controller {
     @PostMapping("/addrestaurant/{id}")
     public Users updateRest(@PathVariable int id, @RequestBody Restaurant restaurant){
         return this.userService.updateRestaurant(id, restaurant);
+    }
+
+    @PostMapping("/addpdf/{id}")
+    public pdf addPdf(@PathVariable int id, @RequestParam MultipartFile file) throws IOException {
+        return this.pdfStorage.store(file, String.valueOf(id));
     }
 
     @GetMapping("/user/name/{name}")
